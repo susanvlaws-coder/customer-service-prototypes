@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect Interactive: Take a Break Protocol</title>
+    <title>UniConnect Interactive: Secure Exam Break</title>
     <style>
         :root {
-            /* REBRANDED THEME: UniConnect (Crimson & Slate) */
-            --uni-primary: #800000;   /* Academic Crimson */
-            --uni-secondary: #f8f9fa; /* Light Gray */
-            --uni-accent: #2c3e50;    /* Slate/Dark Grey */
-            --uni-highlight: #e3f2fd; /* Light Blue Highlight */
+            /* REBRANDED THEME: Tech-Slate (Neutral) */
+            --uni-dark: #2c3e50;
+            --uni-mid: #95a5a6;
+            --uni-light: #ecf0f1;
             
-            --success-green: #2e7d32;
-            --stop-red: #c62828;
-            --text-dark: #333;
+            --success-green: #27ae60;
+            --stop-red: #c0392b;
+            --text-dark: #2c3e50;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #e9ecef;
+            background-color: #dcdcdc;
             color: var(--text-dark);
             padding: 20px;
             display: flex;
@@ -31,14 +30,14 @@
             width: 100%;
             max-width: 700px;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--uni-primary);
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--uni-dark);
             min-height: 600px;
         }
 
         h1 {
-            color: var(--uni-primary);
+            color: var(--uni-dark);
             text-align: center;
             margin-bottom: 5px;
             font-weight: 800;
@@ -47,12 +46,12 @@
 
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #7f8c8d;
             margin-bottom: 30px;
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #ecf0f1;
             padding-bottom: 15px;
         }
 
@@ -61,7 +60,7 @@
             display: none; /* Hidden by default */
             animation: fadeIn 0.5s ease-in-out;
             margin-bottom: 25px;
-            border-left: 4px solid var(--uni-accent);
+            border-left: 4px solid var(--uni-mid);
             padding-left: 20px;
         }
 
@@ -77,7 +76,7 @@
         .step-header {
             font-weight: 800;
             font-size: 1.1em;
-            color: var(--uni-accent);
+            color: var(--uni-dark);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -85,11 +84,11 @@
         }
 
         .step-content {
-            background-color: var(--uni-secondary);
+            background-color: var(--uni-light);
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 4px;
             margin-bottom: 15px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #bdc3c7;
             font-size: 0.95em;
             line-height: 1.5;
         }
@@ -103,7 +102,7 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: 700;
             margin-top: 15px;
-            border-left: 4px solid #ffc107;
+            border-left: 4px solid #f1c40f;
         }
 
         /* Buttons */
@@ -129,20 +128,20 @@
             background-color: var(--success-green);
             color: white;
         }
-        .btn-yes:hover { background-color: #1b5e20; transform: translateY(-1px); }
+        .btn-yes:hover { background-color: #2ecc71; transform: translateY(-1px); }
 
         .btn-no {
             background-color: var(--stop-red);
             color: white;
         }
-        .btn-no:hover { background-color: #b71c1c; transform: translateY(-1px); }
+        .btn-no:hover { background-color: #e74c3c; transform: translateY(-1px); }
 
         .btn-neutral {
-            background-color: var(--uni-accent);
+            background-color: var(--uni-mid);
             color: white;
             margin-bottom: 5px;
         }
-        .btn-neutral:hover { background-color: #1a252f; transform: translateY(-1px); }
+        .btn-neutral:hover { background-color: var(--uni-dark); transform: translateY(-1px); }
 
         /* Selected State */
         button.selected {
@@ -152,9 +151,11 @@
         }
 
         button.dimmed {
-            opacity: 0.4;
+            opacity: 0.3;
             cursor: not-allowed;
             pointer-events: none;
+            background-color: #ecf0f1;
+            color: #bdc3c7;
         }
 
         /* Outcome Boxes */
@@ -174,18 +175,18 @@
         .reset-btn {
             display: block;
             margin: 40px auto 0 auto;
-            background-color: #6c757d;
+            background-color: var(--uni-dark);
             color: white;
             width: 200px;
         }
-        .reset-btn:hover { background-color: #5a6268; }
+        .reset-btn:hover { background-color: #34495e; }
 
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>⏸️ Decision Support: "Take a Break"</h1>
+        <h1>⏸️ Decision Support: "Secure Exam Break"</h1>
         <p class="subtitle">UniConnect Advisor Tool • Fee Waiver Logic Engine</p>
 
         <div id="step-1" class="step-section active">
@@ -205,7 +206,7 @@
             <div class="step-content">
                 You must read this verbatim to set expectations:
                 <div class="script-box">
-                    "You may take a 10-minute break. However:<br>
+                    "You may take a 10-minute Secure Exam Break. However:<br>
                     1. You CANNOT return to any question you have already viewed.<br>
                     2. You CANNOT save unused minutes for later.<br>
                     3. You MUST complete a room check upon return."
@@ -223,7 +224,7 @@
             <div class="step-header">3️⃣ EXECUTE BREAK</div>
             <div class="step-content">
                 <ul>
-                    <li>Instruct student to click "Take a Break".</li>
+                    <li>Instruct student to click "Secure Exam Break".</li>
                     <li>Remind student to <strong>chat with Proctor</strong>.</li>
                     <li>Wait for return & <strong>Room Check</strong>.</li>
                 </ul>
@@ -257,7 +258,6 @@
 <script>
     // Helper to dim unselected buttons
     function selectButton(btnGroup, selectedBtn) {
-        // Find the parent container of the clicked button
         const container = btnGroup.parentElement; 
         const buttons = container.querySelectorAll('button');
         
@@ -274,7 +274,6 @@
         selectButton(btn, btn);
         const outcomeDiv = document.getElementById('outcome-1');
         
-        // Clear future steps if user changes mind
         document.getElementById('step-2').classList.remove('active');
         document.getElementById('step-3').classList.remove('active');
         document.getElementById('step-4').classList.remove('active');
@@ -282,7 +281,7 @@
         if (choice === 'yes') {
             outcomeDiv.innerHTML = '<div class="outcome outcome-stop">🛑 STOP. Follow the instructions in the Accommodation Letter. Do not use the Standard Break protocol.</div>';
         } else {
-            outcomeDiv.innerHTML = '<div class="outcome outcome-go">✅ GO. Proceed to Standard Break Protocol.</div>';
+            outcomeDiv.innerHTML = '<div class="outcome outcome-go">✅ GO. Proceed to Secure Exam Break.</div>';
             setTimeout(() => document.getElementById('step-2').classList.add('active'), 400);
         }
     }
@@ -292,7 +291,6 @@
         selectButton(btn, btn);
         const outcomeDiv = document.getElementById('outcome-2');
 
-        // Clear future steps
         document.getElementById('step-3').classList.remove('active');
         document.getElementById('step-4').classList.remove('active');
 
@@ -309,7 +307,6 @@
         selectButton(btn, btn);
         const outcomeDiv = document.getElementById('outcome-3');
 
-        // Clear future steps
         document.getElementById('step-4').classList.remove('active');
 
         if (choice === 'no-issue') {
