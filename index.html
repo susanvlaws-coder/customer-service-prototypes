@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus CRM Simulation | Training Module</title>
+    <style>
+        :root {
+            /* --- BRANDING: NEXUS THEME --- */
+            --crm-header: #263238;   /* Dark Slate */
+            --crm-sidebar: #eceff1;  /* Light Grey */
+            --crm-accent: #00897b;   /* Teal (Primary Action Color) */
+            --crm-bg: #cfd8dc;       /* Background for the "desktop" */
+            --guide-color: #6200ea;  /* Deep Purple (Guidance/WalkMe) */
+            --error-color: #c62828;  /* Red */
+            --bubble-width: 280px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #b0bec5; /* Darker desktop background */
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* --- DESKTOP APP WRAPPER --- */
+        .app-wrapper {
+            width: 95%;
+            max-width: 1100px;
+            height: 90vh;
+            background-color: #f5f5f5;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; 
+            position: relative;
+        }
+
+        /* --- CRM HEADER --- */
+        .crm-header {
+            background-color: var(--crm-header);
+            color: white;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            flex-shrink: 0; 
+            border-bottom: 3px solid var(--crm-accent);
+        }
+
+        .crm-container { 
+            display: flex; 
+            flex: 1; 
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .crm-sidebar {
+            width: 220px;
+            background-color: var(--crm-sidebar);
+            border-right: 1px solid #cfd8dc;
+            padding: 15px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-item { 
+            padding: 10px; 
+            color: #546e7a; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            cursor: default;
+        }
+        .sidebar-item.active { 
+            background-color: #e0f2f1; /* Light Teal */
+            color: var(--crm-accent); 
+            font-weight: 700; 
+            border-left: 4px solid var(--crm-accent);
+        }
+
+        /* --- MAIN CONTENT AREA --- */
+        .crm-main { 
+            flex: 1; 
+            padding: 25px; 
+            padding-bottom: 120px; /* Extra space for scrolling */
+            overflow-y: auto; 
+            position: relative; 
+            background-color: white;
+            scroll-behavior: smooth; 
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid #eceff1;
+        }
+
+        .section-title {
+            font-size: 16px; font-weight: 700; margin-bottom: 16px;
+            color: #263238; border-bottom: 2px solid #eceff1; padding-bottom: 10px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .data-row { display: flex; margin-bottom: 12px; font-size: 14px; align-items: center; }
+        .data-label { width: 120px; color: #78909c; font-weight: 500; }
+        .data-value { font-weight: 600; color: #37474f; }
+
+        /* Buttons & Inputs */
+        .btn {
+            background-color: white; border: 1px solid #b0bec5; color: #455a64;
+            padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 13px; font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn:hover { background-color: #eceff1; border-color: #90a4ae; }
+        
+        .btn-primary { background-color: var(--crm-accent); color: white; border: none; }
+        .btn-primary:hover { background-color: #00695c; box-shadow: 0 2px 5px rgba(0,137,123,0.4); }
+
+        .btn-waive { border-color: var(--error-color); color: var(--error-color); margin-right: 8px; }
+        .btn-waive:hover { background-color: #ffebee; }
+
+        select, input {
+            width: 100%; padding: 10px; border: 1px solid #cfd8dc;
+            border-radius: 4px; margin-bottom: 15px; font-family: inherit; box-sizing: border-box;
+            font-size: 14px;
+        }
+        select:focus, input:focus { outline: 2px solid var(--crm-accent); border-color: transparent; }
+
+        /* --- GUIDANCE OVERLAY (WalkMe Style) --- */
+        .guide-backdrop {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(38, 50, 56, 0.6); z-index: 999;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .guide-backdrop.active { opacity: 1; pointer-events: auto; }
+
+        .guide-highlight {
+            position: relative; z-index: 1001 !important; background: white;
+            box-shadow: 0 0 0 4px var(--guide-color); pointer-events: auto; border-radius: 4px;
+        }
+
+        .guide-bubble {
+            position: fixed; 
+            width: var(--bubble-width); 
+            background: white; border-radius: 8px;
+            padding: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); z-index: 1002;
+            opacity: 0; transform: translateY(10px); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            pointer-events: none; border-left: 5px solid var(--guide-color);
+        }
+        
+        .guide-bubble.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        
+        .guide-bubble h4 { margin: 0 0 8px 0; color: var(--guide-color); font-size: 15px; font-weight: 700; display: flex; align-items: center; }
+        .guide-bubble h4::before { content: '💡'; margin-right: 8px; font-size: 14px; }
+        
+        .guide-bubble p { margin: 0 0 15px 0; color: #455a64; font-size: 14px; line-height: 1.5; }
+
+        .guide-next-btn {
+            background-color: var(--guide-color); color: white; border: none;
+            padding: 6px 12px; border-radius: 4px; cursor: pointer; float: right; font-size: 12px; font-weight: 600;
+        }
+        .guide-next-btn:hover { background-color: #4527a0; }
+
+        /* Modals */
+        .modal {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 40px; border-radius: 12px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 2000; display: none; width: 340px;
+        }
+
+        #caseFormPanel, #resolutionWrapper { display: none; }
+
+        /* Empathy Section Styling */
+        .empathy-box {
+            margin: 15px 0; background: #e3f2fd; padding: 15px; 
+            border-left: 4px solid #1976d2; display: none; border-radius: 0 4px 4px 0;
+        }
+        .empathy-label { font-size: 12px; font-weight: 700; color: #1565c0; text-transform: uppercase; margin-bottom: 5px; display: block; }
+
+    </style>
+</head>
+<body>
+
+    <script>
+        // ======================================================
+        //  CHANGE THIS NUMBER (1, 2, or 3) TO SWITCH SCENARIOS
+        // ======================================================
+        let currentScenarioId = '2'; 
+        // ======================================================
+
+        const scenarios = {
+            '1': {
+                customer: "Anxious Customer (Ref: #332)",
+                order: "Area Rug - 8x10 (Grey)",
+                tourTitle: "Scenario 1: Shipping Status",
+                reasonVal: "inquiry",
+                resVal: "info",
+                steps: [
+                    { target: 'customerCard', text: "Customer is anxious about a missing item. Review their profile details first." },
+                    { target: 'btnLogCase', text: "Open the <b>Nexus Ticket System</b> by clicking 'Report Issue'." },
+                    { target: 'caseReason', text: "Select <b>Shipping Inquiry / Status</b> from the dropdown.", triggerValue: 'inquiry' },
+                    { target: 'empathySection', text: "<b>C.A.R.E. Framework:</b> Do not proceed to data yet. You must validate their anxiety first. Check the Protocol Box." },
+                    { target: 'resolutionType', text: "The item is out for delivery. Select <b>Provide Tracking Update</b>.", triggerValue: 'info' },
+                    { target: 'btnFinish', text: "Close the ticket. No refund is needed, just reassurance." }
+                ]
+            },
+            '2': {
+                customer: "Annoyed Customer (Ref: #998)",
+                order: "Coffee Table - Oak Finish",
+                tourTitle: "Scenario 2: Return Policy",
+                reasonVal: "return",
+                resVal: "pickup_fee",
+                steps: [
+                    { target: 'customerCard', text: "Customer is annoyed about the $40 pickup fee. Verify the item details." },
+                    { target: 'btnLogCase', text: "Click <b>Report Issue</b> to initiate the return workflow." },
+                    { target: 'caseReason', text: "This is a 'remorse' return (item didn't fit). Select <b>Return Request</b>.", triggerValue: 'return' },
+                    { target: 'empathySection', text: "<b>De-escalation Required:</b> Acknowledge the frustration about the hidden cost before clicking anything else." },
+                    { target: 'resolutionType', text: "<b>Policy Check:</b> Select <b>Schedule Pickup (Fee Applies)</b>. Do NOT waive the fee.", triggerValue: 'pickup_fee' },
+                    { target: 'btnFinish', text: "Confirm the Tuesday pickup time and submit the case." }
+                ]
+            },
+            '3': {
+                customer: "Furious Customer (Ref: #771)",
+                order: "Marble Vanity Unit",
+                tourTitle: "Scenario 3: Project Crisis",
+                reasonVal: "damage",
+                resVal: "overnight",
+                steps: [
+                    { target: 'customerCard', text: "High Urgency: Contractors are waiting on site. Check order details." },
+                    { target: 'btnLogCase', text: "Click <b>Report Issue</b> immediately." },
+                    { target: 'caseReason', text: "The unit is crushed. Select <b>Item Damaged / Defective</b>.", triggerValue: 'damage' },
+                    { target: 'empathySection', text: "<b>Critical Empathy:</b> Validate the stress of their renovation timeline." },
+                    { target: 'resolutionType', text: "We need speed. Select <b>Overnight Replacement</b> to save the project.", triggerValue: 'overnight' },
+                    { target: 'btnFinish', text: "Submit the expedited order. You saved the day!" }
+                ]
+            }
+        };
+
+        const activeScenario = scenarios[currentScenarioId];
+    </script>
+
+    <div class="app-wrapper">
+        <div class="crm-header">
+            <div style="margin-right: 20px; font-size: 20px;">⚡ Nexus CRM</div>
+            <div style="font-size: 13px; opacity: 0.7; border-left: 1px solid rgba(255,255,255,0.3); padding-left: 15px;">Dashboard / <span id="headerOrder">Order #...</span></div>
+        </div>
+
+        <div class="crm-container">
+            <div class="crm-sidebar">
+                <div class="sidebar-item active">Order Details</div>
+                <div class="sidebar-item">Customer Profile</div>
+                <div class="sidebar-item">Interaction Log</div>
+                <div class="sidebar-item">Knowledge Base</div>
+            </div>
+
+            <div class="crm-main">
+                <div class="card" id="customerCard">
+                    <div class="section-title">Customer Profile</div>
+                    <div class="data-row"><div class="data-label">Name:</div><div class="data-value" id="dispName">...</div></div>
+                    <div class="data-row"><div class="data-label">Tier:</div><div class="data-value">Gold Member</div></div>
+                </div>
+
+                <div class="card" id="orderCard">
+                    <div class="section-title">Order Details</div>
+                    <div class="data-row"><div class="data-label">Product:</div><div class="data-value" id="dispOrder">...</div></div>
+                    <div style="margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                        <button id="btnLogCase" class="btn" onclick="openCase()">Report Issue</button>
+                        <button class="btn">Track Package</button>
+                    </div>
+                </div>
+
+                <div class="card" id="caseFormPanel">
+                    <div class="section-title">New Ticket</div>
+                    <label style="font-size:12px; color:#546e7a; font-weight:600;">Reason for Contact</label>
+                    <select id="caseReason" onchange="checkReason()">
+                        <option value="">-- Select Category --</option>
+                        <option value="inquiry">Shipping Inquiry / Status</option>
+                        <option value="return">Return Request</option>
+                        <option value="damage">Item Damaged / Defective</option>
+                    </select>
+
+                    <div id="empathySection" class="empathy-box">
+                        <label class="empathy-label">⚠️ C.A.R.E. Protocol</label>
+                        <div style="font-size:13px; margin-bottom:8px; color:#0d47a1;">Customer emotion detected. Have you validated their feelings?</div>
+                        <label style="font-size:13px; cursor:pointer;"><input type="checkbox" id="empathyCheck" onclick="checkEmpathy()"> "I have acknowledged their concern."</label>
+                    </div>
+
+                    <div id="resolutionWrapper" style="margin-top:20px; opacity:0.5; pointer-events:none;">
+                        <label style="font-size:12px; color:#546e7a; font-weight:600;">Resolution Action</label>
+                        
+                        <div id="scen2Buttons" style="display:none; margin-bottom:15px;">
+                             <button class="btn btn-waive" onclick="triggerPolicyError()">Waive Pickup Fee ($40)</button>
+                        </div>
+
+                        <select id="resolutionType" onchange="checkResolution()">
+                            <option value="">-- Select Resolution --</option>
+                            <option value="info">Provide Tracking Update</option>
+                            <option value="pickup_fee">Schedule Pickup (Fee Applies)</option>
+                            <option value="overnight">Overnight Replacement</option>
+                        </select>
+
+                        <div id="finishOption" style="margin-top:15px; display:none;">
+                            <button id="btnFinish" class="btn btn-primary" onclick="finish()">Submit & Close Ticket</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="guide-backdrop" id="backdrop"></div>
+    <div class="guide-bubble" id="bubble">
+        <h4 id="bubbleTitle">Guidance</h4>
+        <p id="bubbleText">...</p>
+        <button class="guide-next-btn" id="bubbleBtn" onclick="nextStep()">Next</button>
+    </div>
+
+    <div class="modal" id="successModal">
+        <h2 style="color:#2e7d32; margin-top:0;">Module Complete!</h2>
+        <p style="color:#555; line-height:1.6;">You successfully navigated Nexus CRM while maintaining the C.A.R.E. Empathy standards.</p>
+        <button class="btn btn-primary" onclick="location.reload()">Restart Module</button>
+    </div>
+
+    <div class="modal" id="errorModal">
+        <h2 style="color:#c62828; margin-top:0;">Policy Warning</h2>
+        <p style="color:#555; line-height:1.6;">For non-defective returns (remorse), we <b>cannot</b> waive the pickup fee. This creates inconsistent service expectations.</p>
+        <button class="btn" onclick="closeError()">Return to Ticket</button>
+    </div>
+
+    <script>
+        document.getElementById('dispName').innerText = activeScenario.customer;
+        document.getElementById('dispOrder').innerText = activeScenario.order;
+        document.getElementById('headerOrder').innerText = activeScenario.order.split(' (')[0]; 
+
+        let currentStepIndex = 0;
+
+        function initTour() {
+            setTimeout(() => showStep(0), 1000); // Slightly longer delay for "loading" feel
+        }
+
+        function showStep(index) {
+            if(index >= activeScenario.steps.length) return;
+            currentStepIndex = index;
+            const stepData = activeScenario.steps[index];
+            const target = document.getElementById(stepData.target);
+            const bubble = document.getElementById('bubble');
+            const backdrop = document.getElementById('backdrop');
+
+            // --- AUTO-SCROLL FIX ---
+            target.scrollIntoView({block: "center", behavior: "smooth"});
+
+            // Activate UI
+            backdrop.classList.add('active');
+            document.querySelectorAll('.guide-highlight').forEach(el => el.classList.remove('guide-highlight'));
+            target.classList.add('guide-highlight');
+
+            // --- POSITIONING LOGIC ---
+            // Small delay to allow scroll to finish before calculating positions
+            setTimeout(() => {
+                const rect = target.getBoundingClientRect();
+                const bubbleW = 320; 
+                const bubbleH = 180; 
+                
+                let top = rect.top;
+                let left = rect.right + 25;
+
+                // Flip Left if too far right
+                if (left + bubbleW > window.innerWidth) {
+                    left = rect.left - bubbleW - 25;
+                }
+
+                // Flip Up if too far down
+                if (top + bubbleH > window.innerHeight) {
+                    top = rect.top - bubbleH + 20; 
+                }
+                
+                if (top < 20) top = 20;
+
+                bubble.style.top = top + 'px';
+                bubble.style.left = left + 'px';
+                
+                document.getElementById('bubbleTitle').innerText = activeScenario.tourTitle;
+                document.getElementById('bubbleText').innerHTML = stepData.text;
+                
+                const btn = document.getElementById('bubbleBtn');
+                if(stepData.triggerValue || stepData.target === 'btnLogCase' || stepData.target === 'btnFinish' || stepData.target === 'empathyCheck') {
+                    btn.style.display = 'none'; 
+                } else {
+                    btn.style.display = 'block';
+                }
+                
+                bubble.classList.add('visible');
+            }, 300);
+        }
+
+        function nextStep() {
+            currentStepIndex++;
+            if(currentStepIndex < activeScenario.steps.length) {
+                showStep(currentStepIndex);
+            } else {
+                finish();
+            }
+        }
+
+        function openCase() {
+            document.getElementById('caseFormPanel').style.display = 'block';
+            if(activeScenario.steps[currentStepIndex].target === 'btnLogCase') nextStep();
+        }
+
+        function checkReason() {
+            const val = document.getElementById('caseReason').value;
+            const step = activeScenario.steps[currentStepIndex];
+            if(step.target === 'caseReason' && val === step.triggerValue) {
+                document.getElementById('empathySection').style.display = 'block';
+                nextStep();
+            }
+        }
+
+        function checkEmpathy() {
+            if(document.getElementById('empathyCheck').checked) {
+                const wrapper = document.getElementById('resolutionWrapper');
+                wrapper.style.display = 'block';
+                wrapper.style.opacity = '1';
+                wrapper.style.pointerEvents = 'auto';
+                
+                if(currentScenarioId === '2') {
+                    document.getElementById('scen2Buttons').style.display = 'block';
+                }
+
+                if(activeScenario.steps[currentStepIndex].target === 'empathySection') nextStep();
+            }
+        }
+
+        function triggerPolicyError() {
+            document.getElementById('errorModal').style.display = 'block';
+        }
+
+        function closeError() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        function checkResolution() {
+            const val = document.getElementById('resolutionType').value;
+            const step = activeScenario.steps[currentStepIndex];
+            
+            if(step.target === 'resolutionType' && val === step.triggerValue) {
+                document.getElementById('finishOption').style.display = 'block';
+                document.getElementById('scen2Buttons').style.display = 'none';
+                nextStep();
+            }
+        }
+
+        function finish() {
+            document.getElementById('backdrop').classList.remove('active');
+            document.getElementById('bubble').classList.remove('visible');
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        window.onload = initTour;
+
+    </script>
+</body>
+</html>
