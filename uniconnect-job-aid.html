@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect Job Aid: Take a Break Protocol</title>
+    <title>UniConnect Job Aid: Secure Exam Break</title>
     <style>
         :root {
-            /* REBRANDED THEME: UniConnect (Crimson & Slate) */
-            --uni-primary: #800000;   /* Academic Crimson */
-            --uni-secondary: #f8f9fa; /* Light Gray Background */
-            --uni-border: #dee2e6;    /* Subtle Borders */
-            --uni-accent: #2c3e50;    /* Slate/Dark Grey */
+            /* REBRANDED THEME: Tech-Slate (Neutral) */
+            --uni-dark: #2c3e50;      /* Dark Slate */
+            --uni-mid: #95a5a6;       /* Mid Grey */
+            --uni-light: #ecf0f1;     /* Light Grey Background */
+            --uni-border: #bdc3c7;    
             
-            --success-green: #2e7d32;
-            --stop-red: #c62828;
-            --text-dark: #333;
+            --success-green: #27ae60; /* Vibrant Green */
+            --stop-red: #c0392b;      /* Vibrant Red */
+            --text-dark: #2c3e50;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #e9ecef; /* Darker grey for desktop background */
+            background-color: #dcdcdc; /* Desktop Background */
             color: var(--text-dark);
             padding: 20px;
             display: flex;
@@ -31,22 +31,23 @@
             width: 100%;
             max-width: 800px;
             padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--uni-primary); /* Crimson Top Bar */
+            border-radius: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--uni-dark); 
         }
 
         h1 {
-            color: var(--uni-primary);
+            color: var(--uni-dark);
             text-align: center;
             margin-bottom: 5px;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .subtitle {
             text-align: center;
-            color: #666;
+            color: #7f8c8d;
             margin-bottom: 30px;
             font-size: 0.9em;
             text-transform: uppercase;
@@ -57,17 +58,17 @@
 
         /* Flowchart Box Styles */
         .step-box {
-            background-color: var(--uni-secondary);
+            background-color: var(--uni-light);
             border: 1px solid var(--uni-border);
             padding: 20px;
             margin-bottom: 20px;
-            border-radius: 6px;
+            border-radius: 4px;
             position: relative;
         }
 
         .step-title {
             font-weight: 800;
-            color: var(--uni-accent);
+            color: var(--uni-dark);
             margin-bottom: 8px;
             display: flex;
             align-items: center;
@@ -78,17 +79,17 @@
         .step-content {
             font-size: 0.95em;
             line-height: 1.5;
-            color: #444;
+            color: #34495e;
         }
 
         .alert-box {
-            background-color: #fff3cd;
+            background-color: #fff3cd; /* Keep Yellow for Caution */
             border: 1px solid #ffeeba;
             color: #856404;
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 4px;
             margin: 25px 0;
-            border-left: 6px solid #ffc107; /* Warning Yellow */
+            border-left: 6px solid #f1c40f; 
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
 
@@ -96,12 +97,12 @@
             font-family: 'Courier New', Courier, monospace;
             font-weight: 700;
             background: rgba(255, 255, 255, 0.8);
-            border: 1px dashed #cba343;
+            border: 1px dashed #7f8c8d;
             padding: 12px;
             display: block;
             margin-top: 12px;
             border-radius: 4px;
-            color: #5d4037;
+            color: #2c3e50;
         }
 
         /* Decision Logic Grid */
@@ -114,19 +115,19 @@
 
         .decision-card {
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 4px;
             color: white;
             font-size: 0.9em;
         }
 
         .decision-yes {
             background-color: var(--success-green);
-            border-left: 5px solid #1b5e20;
+            border-left: 5px solid #1e8449;
         }
 
         .decision-no {
             background-color: var(--stop-red);
-            border-left: 5px solid #b71c1c;
+            border-left: 5px solid #922b21;
         }
 
         /* Fee Waiver Table */
@@ -138,7 +139,7 @@
         }
 
         th {
-            background-color: var(--uni-accent); /* Slate Header */
+            background-color: var(--uni-dark);
             color: white;
             padding: 12px;
             text-align: left;
@@ -146,16 +147,16 @@
         }
 
         td {
-            border: 1px solid #dee2e6;
+            border: 1px solid #bdc3c7;
             padding: 12px;
         }
 
-        tr:nth-child(even) {background-color: #f8f9fa;}
+        tr:nth-child(even) {background-color: white;}
 
         .status-approve {
             color: var(--success-green);
             font-weight: 800;
-            background-color: #e8f5e9;
+            background-color: #e8f8f5;
             padding: 4px 8px;
             border-radius: 4px;
             display: inline-block;
@@ -164,7 +165,7 @@
         .status-deny {
             color: var(--stop-red);
             font-weight: 800;
-            background-color: #ffebee;
+            background-color: #fdedec;
             padding: 4px 8px;
             border-radius: 4px;
             display: inline-block;
@@ -174,7 +175,7 @@
         .arrow {
             text-align: center;
             font-size: 24px;
-            color: #bbb; /* Subtle arrow */
+            color: #95a5a6;
             margin: -10px 0 10px 0;
         }
 
@@ -183,8 +184,8 @@
 <body>
 
     <div class="container">
-        <h1>⏸️ "Take a Break" Protocol</h1>
-        <p class="subtitle">UniConnect Student Services • Advisor Reference Guide</p>
+        <h1>⏸️ "Secure Exam Break" Protocol</h1>
+        <p class="subtitle">UniConnect Advisor Reference Guide</p>
 
         <div class="step-box">
             <div class="step-title">1️⃣ START: Student requests a break</div>
@@ -194,11 +195,11 @@
             <div class="decision-grid">
                 <div class="decision-card decision-no">
                     <strong>YES (Has Letter)</strong><br>
-                    🛑 STOP. Follow specific instructions in their file.
+                    🛑 STOP. Follow instructions in the Letter.
                 </div>
                 <div class="decision-card decision-yes">
                     <strong>NO (Standard)</strong><br>
-                    ✅ GO. Proceed to Standard 10-Minute Break.
+                    ✅ GO. Proceed to Secure Exam Break.
                 </div>
             </div>
         </div>
@@ -209,7 +210,7 @@
             <div class="step-title">⚠️ CRITICAL: The Golden Rule</div>
             <div class="step-content">
                 You MUST read this verbatim to the student <strong>before</strong> they click the button:
-                <span class="script-text">"You may take a 10-minute break. However, you CANNOT return to any question you have already answered or looked at. Any unused time will be lost."</span>
+                <span class="script-text">"You may take a 10-minute Secure Break. However, you CANNOT return to any question you have already answered or looked at. Any unused time will be lost."</span>
             </div>
         </div>
 
@@ -219,8 +220,8 @@
             <div class="step-title">2️⃣ EXECUTION STEPS</div>
             <div class="step-content">
                 <ol>
-                    <li>Student clicks "Take a Break" button.</li>
-                    <li>Student <strong>chats with Proctor</strong> before leaving camera view.</li>
+                    <li>Student clicks "Secure Exam Break" button.</li>
+                    <li>Student <strong>chats with Proctor</strong> before leaving view.</li>
                     <li>Student performs <strong>Room Check</strong> upon return.</li>
                 </ol>
             </div>
@@ -229,7 +230,7 @@
         <div class="arrow">↓</div>
 
         <div class="step-box">
-            <div class="step-title">💲 FEE WAIVER PROTOCOL ($60 Value)</div>
+            <div class="step-title">💲 WAIVER PROTOCOL ($60 Value)</div>
             <div class="step-content">
                 Use this table when a student demands a free retake due to a break issue.
                 
@@ -267,8 +268,8 @@
             </div>
         </div>
 
-        <p style="text-align:center; font-size:0.8em; margin-top:30px; color:#999; border-top:1px solid #eee; padding-top:15px;">
-            UniConnect Internal Job Aid • Designed by Susan Laws • v2.0
+        <p style="text-align:center; font-size:0.8em; margin-top:30px; color:#95a5a6; border-top:1px solid #eee; padding-top:15px;">
+            UniConnect Internal Job Aid • v2.1
         </p>
 
     </div>
