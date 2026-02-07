@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WGU Scenario: The "Take a Break" Challenge</title>
+    <style>
+        /* CSS Styles - Makes it look good */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        #game-container {
+            background-color: white;
+            width: 100%;
+            max-width: 650px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 6px solid #003366; /* WGU Navy */
+        }
+        h1 {
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 10px;
+            margin-top: 0;
+        }
+        .scenario-tag {
+            background-color: #FFD700; /* WGU Goldish */
+            color: #003366;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        #question-text {
+            font-size: 18px;
+            line-height: 1.5;
+            color: #333;
+            margin: 20px 0;
+            min-height: 60px;
+        }
+        .btn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        button {
+            background-color: #003366;
+            color: white;
+            border: none;
+            padding: 15px;
+            text-align: left;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: block;
+            width: 100%;
+            border-left: 5px solid transparent;
+        }
+        button:hover {
+            background-color: #004d99;
+            border-left: 5px solid #FFD700;
+            transform: translateY(-2px);
+        }
+        #feedback-area {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .feedback-correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .feedback-wrong {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .menu-btn {
+            text-align: center;
+            font-weight: bold;
+            background-color: #6c757d;
+        }
+        .start-btn {
+            text-align: center; 
+            background-color: #28a745; 
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <span class="scenario-tag" id="tag">System Ready</span>
+    <h1 id="title">WGU Simulation</h1>
+    
+    <div id="question-text">
+        <p>Click the button below to launch the training simulation.</p>
+    </div>
+    
+    <div class="btn-grid" id="choices">
+        <button onclick="startGame()" class="start-btn">▶ LAUNCH SIMULATION</button>
+    </div>
+
+    <div id="feedback-area"></div>
+</div>
+
+<script>
+    // --- GAME DATA ---
+    const scenarios = {
+        // MAIN MENU
+        start: {
+            tag: "Dashboard",
+            title: "Select a Call Scenario",
+            text: "Welcome to the 'Spot the Error' Practice Simulation. Please select a call type to practice:",
+            choices: [
+                { text: "📞 Scenario 1: The 'Complex' Request (Backtracking & Waivers)", next: "original_start" },
+                { text: "⏱️ Scenario 2: The 'Time Bank' Question", next: "time_bank_start" },
+                { text: "😶 Scenario 3: The 'Silent' Student (Omission)", next: "omission_start" },
+                { text: "🏃 Scenario 4: The 'Rusher' (Proctor Protocol)", next: "proctor_start" }
+            ]
+        },
+
+        // SCENARIO 1: ORIGINAL
+        original_start: {
+            tag: "Scenario 1: The Request",
+            title: "Incoming Call...",
+            text: "<strong>Student:</strong> 'Hi, I'm about to take my Biology exam. It's 3 hours long. Can I take a break in the middle? I don't have a doctor's note or anything.'",
+            choices: [
+                { text: "No, unfortunately, breaks are only for students with ADA accommodations.", next: "wrong_ada" },
+                { text: "Yes, you can take a 10-minute break whenever you like.", next: "wrong_omission" },
+                { text: "Yes, you can take a break, BUT you cannot return to questions you've already seen.", next: "correct_disclaimer" }
+            ]
+        },
+        wrong_ada: {
+            tag: "Critical Error",
+            title: "Incorrect Policy",
+            text: "<strong>Incorrect.</strong> You just denied a student a valid feature. The 'Take a Break' feature is universal and does NOT require ADA documentation.",
+            type: "fail"
+        },
+        wrong_omission: {
+            tag: "Risk Warning",
+            title: "The 'Backtracking' Trap",
+            text: "<strong>Technically true, but dangerous.</strong> By failing to mention the 'No Backtracking' rule, you set the student up to fail. 7% of errors involve this specific omission.",
+            type: "fail"
+        },
+        correct_disclaimer: {
+            tag: "Scenario 1: Phase 2",
+            title: "The Waiver Request",
+            text: "Great job setting expectations! <br><br><strong>Part 2:</strong> A student is demanding a refund for their $60 retake fee. <br><em>'I failed because I panicked. I thought I needed a doctor's note to take a break, so I held it for 3 hours! Nobody told me I could just click the button!'</em>",
+            choices: [
+                { text: "Approve the waiver. This is a service failure on our part.", next: "check_logs" },
+                { text: "Deny the waiver. It is the student's responsibility to know the handbook.", next: "wrong_harsh" }
+            ]
+        },
+        wrong_harsh: {
+            tag: "Missed Opportunity",
+            title: "Too Rigid",
+            text: "<strong>Not quite.</strong> While students should read the handbook, our data shows 16% of staff fail to mention this feature. If we failed to inform them, we should pay for the mistake.",
+            type: "fail"
+        },
+        check_logs: {
+            tag: "Scenario 1: Phase 3",
+            title: "Verify Before Waiving",
+            text: "<strong>Correct Instinct.</strong> However, before you click 'Approve', what is the ONE step you must take to protect the university's budget?",
+            choices: [
+                { text: "Ask the student to send in a doctor's note proving they needed the break.", next: "wrong_ada_again" },
+                { text: "Check the call logs. If a staff member gave wrong info, approve. If not, deny.", next: "winner" }
+            ]
+        },
+        wrong_ada_again: {
+            tag: "Policy Violation",
+            title: "ADA Error",
+            text: "<strong>Stop.</strong> You are falling back into the 'ADA Myth'. We do not require medical documentation for the standard 10-minute break feature.",
+            type: "fail"
+        },
+
+        // SCENARIO 2: TIME BANK
+        time_bank_start: {
+            tag: "Scenario 2: Clarification",
+            title: "The 'Time Bank' Question",
+            text: "<strong>Student:</strong> 'I only need 3 minutes to use the restroom right now. Can I save the other 7 minutes for a stretch break later in the exam?'",
+            choices: [
+                { text: "Yes, you have a total of 10 minutes to use however you want.", next: "wrong_banking" },
+                { text: "No. It is a one-time break. Any unused time is lost.", next: "correct_banking" }
+            ]
+        },
+        wrong_banking: {
+            tag: "Policy Error",
+            title: "Misinformation",
+            text: "<strong>Incorrect.</strong> The policy states: 'if they do not utilize the entire time, they cannot use any remaining time'. You just set the student up for a fight with the proctor later.",
+            type: "fail"
+        },
+        correct_banking: {
+            tag: "Success",
+            title: "Expectations Set",
+            text: "<strong>Correct.</strong> It's crucial to manage expectations. If the student tried to take a second break later, the proctor would have flagged it as an integrity violation.",
+            type: "win"
+        },
+
+        // SCENARIO 3: OMISSION
+        omission_start: {
+            tag: "Scenario 3: The Cue",
+            title: "Reading Between the Lines",
+            text: "<strong>Student:</strong> 'I'm really nervous about this Finance exam. It's 4 hours long and I have back pain. I don't know if I can sit that long.' (The student has NOT asked for a break).",
+            choices: [
+                { text: "Say: 'I understand. Just try to get comfortable and good luck!'", next: "wrong_silence" },
+                { text: "Say: 'Did you know you can utilize the Take a Break feature during the exam?'", next: "correct_offer" }
+            ]
+        },
+        wrong_silence: {
+            tag: "Missed Opportunity",
+            title: "The Omission Error",
+            text: "<strong>Fail.</strong> Data shows 16% of staff fail to mention this feature. This student expressed a clear need (pain/duration). You missed the chance to help them.",
+            type: "fail"
+        },
+        correct_offer: {
+            tag: "Success",
+            title: "Proactive Support",
+            text: "<strong>Excellent.</strong> You identified a student need and offered the solution, reducing the likelihood of a panicked call or complaint later.",
+            type: "win"
+        },
+
+        // SCENARIO 4: PROCTOR PROTOCOL
+        proctor_start: {
+            tag: "Scenario 4: Execution",
+            title: "The Rush",
+            text: "<strong>Student:</strong> 'Okay, I'm taking the break. Can I just click the button and run to the kitchen? I don't want to waste time chatting to the proctor.'",
+            choices: [
+                { text: "Sure, just click the button and go fast.", next: "wrong_integrity" },
+                { text: "Wait! You must speak to the proctor first and do a room check when you return.", next: "correct_protocol" }
+            ]
+        },
+        wrong_integrity: {
+            tag: "Critical Failure",
+            title: "Exam Terminated",
+            text: "<strong>Disaster.</strong> The policy requires students to engage with the proctor and complete a room check. Because the student left the view of the camera without approval, their exam was terminated.",
+            type: "fail"
+        },
+        correct_protocol: {
+            tag: "Success",
+            title: "Integrity Saved",
+            text: "<strong>Correct.</strong> The 'Take a Break' feature requires a room check upon return to ensure exam integrity. Skipping this voids the exam.",
+            type: "win"
+        },
+
+        // WINNER STATE
+        winner: {
+            tag: "Scenario Complete",
+            title: "Simulation Complete",
+            text: "<strong>Excellent work!</strong><br>1. You clarified the rule (No backtracking).<br>2. You identified a service failure vs. a student error.<br>3. You protected the budget by verifying the logs.<br><br>You are ready for the floor.",
+            type: "win"
+        }
+    };
+
+    // --- GAME FUNCTIONS ---
+    function renderScenario(key) {
+        const data = scenarios[key];
+        
+        // Update text elements
+        document.getElementById('tag').innerText = data.tag;
+        document.getElementById('title').innerText = data.title;
+        document.getElementById('question-text').innerHTML = data.text;
+        
+        // Clear previous buttons
+        const btnContainer = document.getElementById('choices');
+        const feedback = document.getElementById('feedback-area');
+        btnContainer.innerHTML = '';
+        feedback.style.display = 'none';
+        document.getElementById('question-text').style.display = 'block';
+
+        if (data.type === 'fail') {
+            // Failure State
+            const restartBtn = document.createElement('button');
+            restartBtn.innerText = "Try Again";
+            restartBtn.className = "menu-btn";
+            restartBtn.onclick = function() { renderScenario('start'); };
+            btnContainer.appendChild(restartBtn);
+            
+            feedback.innerHTML = "<strong>Review the Job Aid:</strong> " + data.text;
+            feedback.className = "feedback-wrong";
+            feedback.style.display = "block";
+            document.getElementById('question-text').style.display = "none";
+
+        } else if (data.type === 'win') {
+            // Win State
+            const restartBtn = document.createElement('button');
+            restartBtn.innerText = "Return to Menu";
+            restartBtn.className = "menu-btn";
+            restartBtn.onclick = function() { renderScenario('start'); };
+            btnContainer.appendChild(restartBtn);
+
+            feedback.innerHTML = data.text;
+            feedback.className = "feedback-correct";
+            feedback.style.display = "block";
+            document.getElementById('question-text').style.display = "none";
+        
+        } else {
+            // Standard Question State
+            data.choices.forEach(function(choice) {
+                const btn = document.createElement('button');
+                btn.innerText = choice.text;
+                btn.onclick = function() { renderScenario(choice.next); };
+                btnContainer.appendChild(btn);
+            });
+        }
+    }
+
+    // Function to start the game
+    function startGame() {
+        renderScenario('start');
+    }
+</script>
+
+</body>
+</html>
