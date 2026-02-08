@@ -3,24 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect: Decision Logic Trainer</title>
+    <title>UniConnect: Decision Trainer</title>
     <style>
         :root {
-            /* REBRANDED THEME: UniConnect */
-            --uni-primary: #800000;   /* Crimson */
-            --uni-accent: #2c3e50;    /* Slate */
-            --uni-gold: #c5a059;      /* Academic Gold (muted) */
-            --uni-bg: #e9ecef;
+            /* REBRANDED THEME: Tech-Slate (Neutral) */
+            --uni-dark: #2c3e50;      /* Dark Slate */
+            --uni-mid: #95a5a6;       /* Mid Grey */
+            --uni-light: #ecf0f1;     /* Light Grey */
             
             --correct-bg: #e8f5e9;
-            --correct-text: #1b5e20;
-            --wrong-bg: #ffebee;
-            --wrong-text: #b71c1c;
+            --correct-text: #27ae60;
+            --wrong-bg: #fdedec;
+            --wrong-text: #c0392b;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--uni-bg);
+            background-color: #dcdcdc;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,13 +33,13 @@
             width: 100%;
             max-width: 700px;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--uni-primary);
+            border-top: 8px solid var(--uni-dark);
         }
 
         h1 {
-            color: var(--uni-primary);
+            color: var(--uni-dark);
             font-size: 26px;
             margin-bottom: 5px;
             margin-top: 15px;
@@ -48,7 +47,7 @@
         }
 
         .scenario-tag {
-            background-color: var(--uni-accent);
+            background-color: var(--uni-mid);
             color: white;
             padding: 5px 10px;
             border-radius: 4px;
@@ -75,13 +74,13 @@
 
         button {
             background-color: white;
-            color: var(--uni-accent);
-            border: 1px solid #ced4da;
+            color: var(--uni-dark);
+            border: 1px solid #bdc3c7;
             padding: 18px;
             text-align: left;
             font-size: 16px;
             font-weight: 500;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
             transition: all 0.2s;
             display: block;
@@ -92,42 +91,42 @@
 
         button:hover {
             background-color: #f8f9fa;
-            border-color: var(--uni-accent);
-            border-left: 5px solid var(--uni-primary);
+            border-color: var(--uni-dark);
+            border-left: 5px solid var(--uni-dark);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .start-btn {
             text-align: center; 
-            background-color: var(--uni-primary); 
+            background-color: var(--uni-dark); 
             color: white;
             font-weight: bold;
             border: none;
         }
         .start-btn:hover {
-            background-color: #5f0000;
-            border-left: 5px solid var(--uni-gold);
+            background-color: #34495e;
+            border-left: 5px solid var(--uni-mid);
             color: white;
         }
 
         .menu-btn {
             text-align: center;
-            background-color: var(--uni-accent);
+            background-color: var(--uni-mid);
             color: white;
             font-weight: bold;
             border: none;
         }
         .menu-btn:hover {
-            background-color: #1a252f;
+            background-color: #7f8c8d;
             color: white;
-            border-left: 5px solid var(--uni-gold);
+            border-left: 5px solid var(--uni-dark);
         }
 
         #feedback-area {
             margin-top: 25px;
             padding: 20px;
-            border-radius: 6px;
+            border-radius: 4px;
             display: none;
             animation: fadeIn 0.3s ease;
         }
@@ -158,7 +157,7 @@
     <h1 id="title">UniConnect Scenarios</h1>
     
     <div id="question-text">
-        <p>This module tests your ability to apply the "Take a Break" policy in real-time. <br><br>Click below to begin the challenge.</p>
+        <p>This module tests your ability to apply the "Secure Exam Break" policy in real-time. <br><br>Click below to begin the challenge.</p>
     </div>
     
     <div class="btn-grid" id="choices">
@@ -192,13 +191,13 @@
             choices: [
                 { text: "No, unfortunately, breaks are only for students with ADA accommodations.", next: "wrong_ada" },
                 { text: "Yes, you can take a 10-minute break whenever you like.", next: "wrong_omission" },
-                { text: "Yes, you can take a break, BUT you cannot return to questions you've already seen.", next: "correct_disclaimer" }
+                { text: "Yes, you can take a Secure Exam Break, BUT you cannot return to questions you've already seen.", next: "correct_disclaimer" }
             ]
         },
         wrong_ada: {
             tag: "Critical Error",
             title: "Incorrect Policy",
-            text: "<strong>Incorrect.</strong> You just denied a student a valid feature. The 'Take a Break' feature is universal and does NOT require ADA documentation.",
+            text: "<strong>Incorrect.</strong> You just denied a student a valid feature. The 'Secure Exam Break' feature is universal and does NOT require ADA documentation.",
             type: "fail"
         },
         wrong_omission: {
@@ -234,7 +233,7 @@
         wrong_ada_again: {
             tag: "Policy Violation",
             title: "ADA Error",
-            text: "<strong>Stop.</strong> You are falling back into the 'ADA Myth'. We do not require medical documentation for the standard 10-minute break feature.",
+            text: "<strong>Stop.</strong> You are falling back into the 'ADA Myth'. We do not require medical documentation for the standard 10-minute Secure Exam Break.",
             type: "fail"
         },
 
@@ -268,7 +267,7 @@
             text: "<strong>Student:</strong> 'I'm really nervous about this Finance exam. It's 4 hours long and I have back pain. I don't know if I can sit that long.' (The student has NOT asked for a break).",
             choices: [
                 { text: "Say: 'I understand. Just try to get comfortable and good luck!'", next: "wrong_silence" },
-                { text: "Say: 'Did you know you can utilize the Take a Break feature during the exam?'", next: "correct_offer" }
+                { text: "Say: 'Did you know you can utilize the Secure Exam Break feature during the exam?'", next: "correct_offer" }
             ]
         },
         wrong_silence: {
@@ -303,7 +302,7 @@
         correct_protocol: {
             tag: "Success",
             title: "Integrity Saved",
-            text: "<strong>Correct.</strong> The 'Take a Break' feature requires a room check upon return to ensure exam integrity. Skipping this voids the exam.",
+            text: "<strong>Correct.</strong> The 'Secure Exam Break' feature requires a room check upon return to ensure exam integrity. Skipping this voids the exam.",
             type: "win"
         },
 
