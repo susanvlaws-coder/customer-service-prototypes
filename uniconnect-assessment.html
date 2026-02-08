@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect: Decision Trainer</title>
+    <title>Penguin University: Decision Trainer</title>
     <style>
         :root {
-            /* REBRANDED THEME: Tech-Slate (Neutral) */
-            --uni-dark: #2c3e50;      /* Dark Slate */
-            --uni-mid: #95a5a6;       /* Mid Grey */
-            --uni-light: #ecf0f1;     /* Light Grey */
+            /* REBRANDED THEME: Penguin University */
+            --penguin-primary: #2c3e50;
+            --penguin-gold: #f39c12;
+            --penguin-light: #ecf0f1;
             
             --correct-bg: #e8f5e9;
             --correct-text: #27ae60;
@@ -35,11 +35,11 @@
             padding: 40px;
             border-radius: 4px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--uni-dark);
+            border-top: 8px solid var(--penguin-primary);
         }
 
         h1 {
-            color: var(--uni-dark);
+            color: var(--penguin-primary);
             font-size: 26px;
             margin-bottom: 5px;
             margin-top: 15px;
@@ -47,7 +47,7 @@
         }
 
         .scenario-tag {
-            background-color: var(--uni-mid);
+            background-color: var(--penguin-primary);
             color: white;
             padding: 5px 10px;
             border-radius: 4px;
@@ -74,7 +74,7 @@
 
         button {
             background-color: white;
-            color: var(--uni-dark);
+            color: var(--penguin-primary);
             border: 1px solid #bdc3c7;
             padding: 18px;
             text-align: left;
@@ -91,36 +91,36 @@
 
         button:hover {
             background-color: #f8f9fa;
-            border-color: var(--uni-dark);
-            border-left: 5px solid var(--uni-dark);
+            border-color: var(--penguin-primary);
+            border-left: 5px solid var(--penguin-gold);
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .start-btn {
             text-align: center; 
-            background-color: var(--uni-dark); 
+            background-color: var(--penguin-primary); 
             color: white;
             font-weight: bold;
             border: none;
         }
         .start-btn:hover {
             background-color: #34495e;
-            border-left: 5px solid var(--uni-mid);
+            border-left: 5px solid var(--penguin-gold);
             color: white;
         }
 
         .menu-btn {
             text-align: center;
-            background-color: var(--uni-mid);
+            background-color: #7f8c8d;
             color: white;
             font-weight: bold;
             border: none;
         }
         .menu-btn:hover {
-            background-color: #7f8c8d;
+            background-color: #95a5a6;
             color: white;
-            border-left: 5px solid var(--uni-dark);
+            border-left: 5px solid var(--penguin-gold);
         }
 
         #feedback-area {
@@ -154,7 +154,7 @@
 
 <div id="game-container">
     <span class="scenario-tag" id="tag">System Ready</span>
-    <h1 id="title">UniConnect Scenarios</h1>
+    <h1 id="title">Penguin University Scenarios</h1>
     
     <div id="question-text">
         <p>This module tests your ability to apply the "Secure Exam Break" policy in real-time. <br><br>Click below to begin the challenge.</p>
@@ -174,7 +174,7 @@
         start: {
             tag: "Dashboard",
             title: "Select a Call Scenario",
-            text: "Welcome to the UniConnect Decision Logic Trainer. Please select a call type to practice:",
+            text: "Welcome to the Penguin University Decision Logic Trainer. Please select a call type to practice:",
             choices: [
                 { text: "📞 Scenario 1: The 'Complex' Request (Backtracking & Waivers)", next: "original_start" },
                 { text: "⏱️ Scenario 2: The 'Time Bank' Question", next: "time_bank_start" },
@@ -203,7 +203,7 @@
         wrong_omission: {
             tag: "Risk Warning",
             title: "The 'Backtracking' Trap",
-            text: "<strong>Technically true, but dangerous.</strong> By failing to mention the 'No Backtracking' rule, you set the student up to fail. 7% of UniConnect errors involve this specific omission.",
+            text: "<strong>Technically true, but dangerous.</strong> By failing to mention the 'No Backtracking' rule, you set the student up to fail. 7% of Penguin University errors involve this specific omission.",
             type: "fail"
         },
         correct_disclaimer: {
