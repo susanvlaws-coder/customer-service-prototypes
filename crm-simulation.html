@@ -13,14 +13,16 @@
             --crm-bg: #cfd8dc;       /* Background for the "desktop" */
             --guide-color: #6200ea;  /* Deep Purple (Guidance/WalkMe) */
             --error-color: #c62828;  /* Red */
-            --bubble-width: 280px;
+            
+            /* Reduced width for better Google Sites embedding */
+            --bubble-width: 260px; 
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #b0bec5; /* Darker desktop background */
+            background-color: #b0bec5; 
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -31,11 +33,11 @@
 
         /* --- DESKTOP APP WRAPPER --- */
         .app-wrapper {
-            width: 95%;
+            width: 98%; /* Wider fit for embeds */
             max-width: 1100px;
-            height: 90vh;
+            height: 95vh; /* Taller fit */
             background-color: #f5f5f5;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             border-radius: 8px;
             display: flex;
             flex-direction: column;
@@ -65,7 +67,7 @@
 
         /* --- SIDEBAR --- */
         .crm-sidebar {
-            width: 220px;
+            width: 200px; /* Slightly narrower sidebar */
             background-color: var(--crm-sidebar);
             border-right: 1px solid #cfd8dc;
             padding: 15px 10px;
@@ -79,7 +81,7 @@
             padding: 10px; 
             color: #546e7a; 
             border-radius: 6px; 
-            font-size: 14px; 
+            font-size: 13px; 
             cursor: default;
         }
         .sidebar-item.active { 
@@ -92,8 +94,8 @@
         /* --- MAIN CONTENT AREA --- */
         .crm-main { 
             flex: 1; 
-            padding: 25px; 
-            padding-bottom: 120px; /* Extra space for scrolling */
+            padding: 20px; 
+            padding-bottom: 150px; /* Extra space for scrolling bubbles */
             overflow-y: auto; 
             position: relative; 
             background-color: white;
@@ -104,19 +106,19 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            padding: 24px;
-            margin-bottom: 24px;
+            padding: 20px;
+            margin-bottom: 20px;
             border: 1px solid #eceff1;
         }
 
         .section-title {
-            font-size: 16px; font-weight: 700; margin-bottom: 16px;
+            font-size: 15px; font-weight: 700; margin-bottom: 16px;
             color: #263238; border-bottom: 2px solid #eceff1; padding-bottom: 10px;
             text-transform: uppercase; letter-spacing: 0.5px;
         }
 
-        .data-row { display: flex; margin-bottom: 12px; font-size: 14px; align-items: center; }
-        .data-label { width: 120px; color: #78909c; font-weight: 500; }
+        .data-row { display: flex; margin-bottom: 12px; font-size: 13px; align-items: center; }
+        .data-label { width: 100px; color: #78909c; font-weight: 500; }
         .data-value { font-weight: 600; color: #37474f; }
 
         /* Buttons & Inputs */
@@ -164,10 +166,10 @@
         
         .guide-bubble.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
         
-        .guide-bubble h4 { margin: 0 0 8px 0; color: var(--guide-color); font-size: 15px; font-weight: 700; display: flex; align-items: center; }
+        .guide-bubble h4 { margin: 0 0 8px 0; color: var(--guide-color); font-size: 14px; font-weight: 700; display: flex; align-items: center; }
         .guide-bubble h4::before { content: '💡'; margin-right: 8px; font-size: 14px; }
         
-        .guide-bubble p { margin: 0 0 15px 0; color: #455a64; font-size: 14px; line-height: 1.5; }
+        .guide-bubble p { margin: 0 0 15px 0; color: #455a64; font-size: 13px; line-height: 1.5; }
 
         .guide-next-btn {
             background-color: var(--guide-color); color: white; border: none;
@@ -179,7 +181,7 @@
         .modal {
             position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: white; padding: 40px; border-radius: 12px; text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 2000; display: none; width: 340px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5); z-index: 2000; display: none; width: 300px;
         }
 
         #caseFormPanel, #resolutionWrapper { display: none; }
@@ -196,11 +198,7 @@
 <body>
 
     <script>
-        // ======================================================
-        //  CHANGE THIS NUMBER (1, 2, or 3) TO SWITCH SCENARIOS
-        // ======================================================
         let currentScenarioId = '2'; 
-        // ======================================================
 
         const scenarios = {
             '1': {
@@ -349,7 +347,7 @@
         let currentStepIndex = 0;
 
         function initTour() {
-            setTimeout(() => showStep(0), 1000); // Slightly longer delay for "loading" feel
+            setTimeout(() => showStep(0), 1000); 
         }
 
         function showStep(index) {
@@ -368,27 +366,44 @@
             document.querySelectorAll('.guide-highlight').forEach(el => el.classList.remove('guide-highlight'));
             target.classList.add('guide-highlight');
 
-            // --- POSITIONING LOGIC ---
-            // Small delay to allow scroll to finish before calculating positions
+            // --- SMART POSITIONING LOGIC (4-WAY) ---
             setTimeout(() => {
                 const rect = target.getBoundingClientRect();
-                const bubbleW = 320; 
-                const bubbleH = 180; 
+                const bubbleW = 260; // Matching CSS
+                const bubbleH = 180; // Approximate height
                 
-                let top = rect.top;
-                let left = rect.right + 25;
+                // Available space calculations
+                const spaceRight = window.innerWidth - rect.right;
+                const spaceLeft = rect.left;
+                const spaceBottom = window.innerHeight - rect.bottom;
+                
+                let top, left;
 
-                // Flip Left if too far right
-                if (left + bubbleW > window.innerWidth) {
-                    left = rect.left - bubbleW - 25;
+                // Priority 1: Right (Desktop Standard)
+                if (spaceRight > bubbleW + 20) {
+                    top = rect.top;
+                    left = rect.right + 20;
+                } 
+                // Priority 2: Left (If Right fails but Left has space)
+                else if (spaceLeft > bubbleW + 20) {
+                    top = rect.top;
+                    left = rect.left - bubbleW - 20;
                 }
-
-                // Flip Up if too far down
-                if (top + bubbleH > window.innerHeight) {
-                    top = rect.top - bubbleH + 20; 
+                // Priority 3: Bottom (Mobile/Narrow Column Fallback)
+                else {
+                    top = rect.bottom + 20;
+                    // Center horizontally relative to target, but clamp to screen edges
+                    let rawLeft = rect.left + (rect.width / 2) - (bubbleW / 2);
+                    left = Math.max(10, Math.min(rawLeft, window.innerWidth - bubbleW - 10));
+                    
+                    // If bottom goes off screen, flip to Top
+                    if (top + bubbleH > window.innerHeight) {
+                        top = rect.top - bubbleH - 20;
+                    }
                 }
                 
-                if (top < 20) top = 20;
+                // Final vertical clamp
+                if (top < 10) top = 10;
 
                 bubble.style.top = top + 'px';
                 bubble.style.left = left + 'px';
@@ -404,7 +419,7 @@
                 }
                 
                 bubble.classList.add('visible');
-            }, 300);
+            }, 400); // Slight delay for scroll to settle
         }
 
         function nextStep() {
