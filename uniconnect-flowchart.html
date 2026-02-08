@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniConnect Interactive: Secure Exam Break</title>
+    <title>Penguin University Interactive: Secure Exam Break</title>
     <style>
         :root {
-            /* REBRANDED THEME: Tech-Slate (Neutral) */
-            --uni-dark: #2c3e50;
-            --uni-mid: #95a5a6;
-            --uni-light: #ecf0f1;
+            /* REBRANDED THEME: Penguin University */
+            --penguin-primary: #2c3e50;
+            --penguin-gold: #f39c12;
+            --penguin-light: #ecf0f1;
             
             --success-green: #27ae60;
             --stop-red: #c0392b;
@@ -32,12 +32,12 @@
             padding: 40px;
             border-radius: 4px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            border-top: 8px solid var(--uni-dark);
+            border-top: 8px solid var(--penguin-primary);
             min-height: 600px;
         }
 
         h1 {
-            color: var(--uni-dark);
+            color: var(--penguin-primary);
             text-align: center;
             margin-bottom: 5px;
             font-weight: 800;
@@ -60,7 +60,7 @@
             display: none; /* Hidden by default */
             animation: fadeIn 0.5s ease-in-out;
             margin-bottom: 25px;
-            border-left: 4px solid var(--uni-mid);
+            border-left: 4px solid var(--penguin-primary);
             padding-left: 20px;
         }
 
@@ -76,7 +76,7 @@
         .step-header {
             font-weight: 800;
             font-size: 1.1em;
-            color: var(--uni-dark);
+            color: var(--penguin-primary);
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -84,7 +84,7 @@
         }
 
         .step-content {
-            background-color: var(--uni-light);
+            background-color: var(--penguin-light);
             padding: 20px;
             border-radius: 4px;
             margin-bottom: 15px;
@@ -94,15 +94,15 @@
         }
 
         .script-box {
-            background-color: #fff3cd;
-            border: 1px solid #ffeeba;
-            color: #856404;
+            background-color: #fffcf5;
+            border: 1px solid #f9e79f;
+            color: #7d6608;
             padding: 15px;
             border-radius: 4px;
             font-family: 'Courier New', Courier, monospace;
             font-weight: 700;
             margin-top: 15px;
-            border-left: 4px solid #f1c40f;
+            border-left: 4px solid var(--penguin-gold);
         }
 
         /* Buttons */
@@ -137,11 +137,11 @@
         .btn-no:hover { background-color: #e74c3c; transform: translateY(-1px); }
 
         .btn-neutral {
-            background-color: var(--uni-mid);
+            background-color: var(--penguin-primary);
             color: white;
             margin-bottom: 5px;
         }
-        .btn-neutral:hover { background-color: var(--uni-dark); transform: translateY(-1px); }
+        .btn-neutral:hover { background-color: #34495e; transform: translateY(-1px); border-bottom: 3px solid var(--penguin-gold); }
 
         /* Selected State */
         button.selected {
@@ -175,11 +175,11 @@
         .reset-btn {
             display: block;
             margin: 40px auto 0 auto;
-            background-color: var(--uni-dark);
+            background-color: #7f8c8d;
             color: white;
             width: 200px;
         }
-        .reset-btn:hover { background-color: #34495e; }
+        .reset-btn:hover { background-color: #95a5a6; }
 
     </style>
 </head>
@@ -187,12 +187,12 @@
 
     <div class="container">
         <h1>⏸️ Decision Support: "Secure Exam Break"</h1>
-        <p class="subtitle">UniConnect Advisor Tool • Fee Waiver Logic Engine</p>
+        <p class="subtitle">Penguin University Advisor Tool • Fee Waiver Logic Engine</p>
 
         <div id="step-1" class="step-section active">
             <div class="step-header">1️⃣ START: Accommodation Check</div>
             <div class="step-content">
-                Check the student's UniConnect profile. Does it mention specific ADA accommodations regarding breaks?
+                Check the student's Penguin University profile. Does it mention specific ADA accommodations regarding breaks?
             </div>
             <div class="btn-group">
                 <button class="btn-no" onclick="handleStep1('yes', this)">YES (Has Letter)</button>
