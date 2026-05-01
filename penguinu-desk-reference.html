@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenguinU: Secure Exam Break - Quick Reference</title>
+    <style>
+        :root {
+            --pu-navy: #003366;
+            --pu-gold: #FFD700;
+            --pu-light-blue: #E6F0F9;
+            --success-green: #28a745;
+            --stop-red: #dc3545;
+            --text-dark: #333;
+            --text-light: #555;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            color: var(--text-dark);
+            line-height: 1.6;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            border-bottom: 4px solid var(--pu-navy);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .university-logo {
+            max-width: 120px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            color: var(--pu-navy);
+            margin: 0 0 5px 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: var(--text-light);
+            font-size: 16px;
+            font-style: italic;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Section Styles */
+        .section-title {
+            color: var(--pu-navy);
+            border-left: 6px solid var(--pu-gold);
+            padding-left: 12px;
+            background-color: var(--pu-light-blue);
+            padding-top: 8px;
+            padding-bottom: 8px;
+            margin-top: 30px;
+            font-size: 20px;
+        }
+
+        .content-box {
+            margin-left: 18px;
+            margin-bottom: 20px;
+        }
+
+        /* Script Box */
+        .script-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-left: 6px solid var(--pu-gold);
+            color: #856404;
+            padding: 15px 20px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 15px;
+            margin: 15px 0;
+        }
+
+        .script-header {
+            display: block;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #664d03;
+            margin-bottom: 5px;
+        }
+
+        /* Grid for Waiver Matrix */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .matrix-card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+        }
+
+        .card-approve {
+            border-top: 5px solid var(--success-green);
+        }
+
+        .card-deny {
+            border-top: 5px solid var(--stop-red);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .badge-approve { background-color: var(--success-green); }
+        .badge-deny { background-color: var(--stop-red); }
+
+        ul {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        /* Print Optimization */
+        @media print {
+            body {
+                padding: 0;
+                background-color: white;
+            }
+            .matrix-card {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="penguinu-logo.jpg" alt="Penguin University Logo" class="university-logo">
+        <h1>Secure Exam Break Protocol</h1>
+        <p class="subtitle">Quick Reference Guide & Waiver Matrix</p>
+    </div>
+
+    <h2 class="section-title">1. Initial Verification (ADA Check)</h2>
+    <div class="content-box">
+        <p>Before approving any break request, you must check the student's profile for an active ADA Accommodation Letter.</p>
+        <ul>
+            <li><strong>If YES (Has Letter):</strong> STOP. Do not use this protocol. Follow the specific instructions outlined in their individual accommodation letter.</li>
+            <li><strong>If NO (Standard Student):</strong> Proceed to Step 2.</li>
+        </ul>
+    </div>
+
+    <h2 class="section-title">2. Expectation Setting (The Golden Rules)</h2>
+    <div class="content-box">
+        <p>To protect exam integrity and prevent escalated complaints, you <strong>must</strong> read the following script verbatim to the student before authorizing the break feature.</p>
+        
+        <div class="script-box">
+            <span class="script-header">Read Aloud to Student:</span>
+            "You may take a 10-minute Secure Exam Break. However:<br><br>
+            1. You CANNOT return to any question you have already viewed.<br>
+            2. You CANNOT save unused minutes for later.<br>
+            3. You MUST complete a room check with the proctor upon return."
+        </div>
+        
+        <p><em>Action: If the student declines these terms, instruct them to continue their exam without utilizing the break feature.</em></p>
+    </div>
+
+    <h2 class="section-title">3. Execution & Proctor Handoff</h2>
+    <div class="content-box">
+        <p>Once the student accepts the terms:</p>
+        <ul>
+            <li>Instruct the student to click the <strong>"Secure Exam Break"</strong> button on their dashboard.</li>
+            <li>Remind the student they must engage the chat with their Proctor before leaving the camera view.</li>
+            <li>Document the interaction in the CRM.</li>
+        </ul>
+    </div>
+
+    <h2 class="section-title">4. Fee Waiver Decision Matrix ($60 Value)</h2>
+    <div class="content-box">
+        <p>If an issue occurs during the break process and the student requests a complimentary retake, use the matrix below to determine the correct financial action.</p>
+        
+        <div class="matrix-grid">
+            <div class="matrix-card card-approve">
+                <span class="badge badge-approve">✅ APPROVE WAIVER</span>
+                <strong>Medical or Tech Emergency</strong>
+                <p style="font-size: 14px; color: var(--text-light);">Fire alarms, verified internet outages, or clear medical emergencies.</p>
+            </div>
+            
+            <div class="matrix-card card-approve">
+                <span class="badge badge-approve">✅ APPROVE WAIVER</span>
+                <strong>Staff Error (Service Recovery)</strong>
+                <p style="font-size: 14px; color: var(--text-light);">Call logs indicate the agent failed to read the verbatim script regarding policy rules.</p>
+            </div>
+
+            <div class="matrix-card card-deny">
+                <span class="badge badge-deny">❌ DENY WAIVER</span>
+                <strong>Student Error / Ignorance</strong>
+                <p style="font-size: 14px; color: var(--text-light);">Student claims "I didn't know the rule" or panicked, despite logs showing the script was read.</p>
+            </div>
+
+            <div class="matrix-card card-deny">
+                <span class="badge badge-deny">❌ DENY WAIVER</span>
+                <strong>Time Banking Violations</strong>
+                <p style="font-size: 14px; color: var(--text-light);">Student attempted to split their 10 minutes into multiple smaller breaks.</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
