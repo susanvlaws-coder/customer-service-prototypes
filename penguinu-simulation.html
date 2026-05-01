@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PenguinU: The Secure Exam Break Challenge</title>
+    <style>
+        :root {
+            --pu-navy: #003366;
+            --pu-gold: #FFD700;
+            --pu-light-blue: #E6F0F9;
+            --success-green: #28a745;
+            --stop-red: #dc3545;
+            --text-dark: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #game-container {
+            background: white;
+            width: 100%;
+            max-width: 650px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-top: 8px solid var(--pu-navy);
+        }
+
+        /* Logo Style */
+        .university-logo {
+            display: block;
+            margin: 0 auto 15px auto;
+            max-width: 110px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: var(--pu-navy);
+            margin-top: 0;
+            font-size: 24px;
+            border-bottom: 2px solid var(--pu-gold);
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        .scenario-tag {
+            background-color: var(--pu-gold);
+            color: var(--pu-navy);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .mission-text {
+            background-color: var(--pu-light-blue);
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid var(--pu-navy);
+            margin-bottom: 25px;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .mission-text ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        #dynamic-content {
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .btn-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            background-color: var(--pu-navy);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            text-align: left;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 5px solid transparent;
+            font-family: inherit;
+        }
+
+        button:hover {
+            background-color: #004d99;
+            border-left: 5px solid var(--pu-gold);
+            transform: translateY(-2px);
+        }
+
+        .btn-menu {
+            text-align: center;
+            background-color: #6c757d;
+            border-left: none;
+            margin-top: 20px;
+        }
+        
+        .btn-menu:hover {
+            background-color: #5a6268;
+            border-left: none;
+        }
+
+        .feedback-box {
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .feedback-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback-fail {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <img src="penguin-logo.jpg" alt="Penguin University Logo" class="university-logo" id="logo-display">
+
+    <span class="scenario-tag" id="tag-display">PenguinU Dashboard</span>
+    <h1 id="title-display">PenguinU: The "Secure Exam Break" Challenge</h1>
+    
+    <div id="dynamic-content">
+        </div>
+    
+    <div class="btn-grid" id="button-container">
+        </div>
+</div>
+
+<script>
+    const scenarios = {
+        timeBank: {
+            title: "Call 1: The Saver",
+            prompt: "<strong>Student:</strong> 'I only need 3 minutes to use the restroom right now. Can I save the other 7 minutes for a stretch break later in the exam?'",
+            choices: [
+                {
+                    text: "Yes, you have a total of 10 minutes to use however you want.",
+                    isCorrect: false,
+                    feedbackTitle: "Policy Error",
+                    feedback: "The policy states unused time cannot be saved. By allowing this, you just set the student up for a fight with the proctor when they try to leave a second time."
+                },
+                {
+                    text: "No. It is a one-time break. Any unused time is lost.",
+                    isCorrect: true,
+                    feedbackTitle: "Expectations Set",
+                    feedback: "Excellent. It is crucial to manage expectations upfront to prevent academic integrity flags and escalated complaints later."
+                }
+            ]
+        },
+        omission: {
+            title: "Call 2: The Silent Sufferer",
+            prompt: "<strong>Student:</strong> 'I am really nervous about this Finance exam. It is 4 hours long and I have terrible back pain. I do not know if I can sit that long.' <br><br><em>(Note: The student does NOT ask for a break).</em>",
+            choices: [
+                {
+                    text: "Say: 'I understand. Just try to get comfortable and good luck!'",
+                    isCorrect: false,
+                    feedbackTitle: "Missed Opportunity",
+                    feedback: "Data shows 16% of staff fail to mention this feature. You missed a clear chance to proactively help a student in need."
+                },
+                {
+                    text: "Say: 'Did you know you can utilize the Secure Exam Break feature during the exam?'",
+                    isCorrect: true,
+                    feedbackTitle: "Proactive Support",
+                    feedback: "Great catch! You identified a student need and offered the solution, reducing the likelihood of a panicked callback or a failed exam."
+                }
+            ]
+        },
+        proctor: {
+            title: "Call 3: The Rusher",
+            prompt: "<strong>Student:</strong> 'Okay, I am taking the break. Can I just click the button and run to the kitchen? I do not want to waste time chatting with anyone.'",
+            choices: [
+                {
+                    text: "Sure, just click the button and go fast.",
+                    isCorrect: false,
+                    feedbackTitle: "Critical Failure",
+                    feedback: "Disaster. Because the student left the view of the camera without proctor approval, their exam was flagged for academic dishonesty and terminated."
+                },
+                {
+                    text: "Wait! You must speak to the proctor first and do a room check when you return.",
+                    isCorrect: true,
+                    feedbackTitle: "Integrity Saved",
+                    feedback: "Correct. The 'Secure Exam Break' feature requires strict proctor engagement and a room check upon return to maintain testing security."
+                }
+            ]
+        }
+    };
+
+    const tagDisplay = document.getElementById('tag-display');
+    const titleDisplay = document.getElementById('title-display');
+    const contentDisplay = document.getElementById('dynamic-content');
+    const buttonContainer = document.getElementById('button-container');
+    const logoDisplay = document.getElementById('logo-display');
+    
+    function renderDashboard() {
+        logoDisplay.style.display = "block"; // Show logo on dashboard
+        tagDisplay.innerText = "PenguinU Dashboard";
+        titleDisplay.innerText = "PenguinU: The Challenge";
+        
+        contentDisplay.innerHTML = `
+            <div class="mission-text">
+                <strong>Your Mission:</strong> Successfully navigate three tricky student calls without causing a policy violation or an unnecessary $60 fee waiver. Keep your Job Aid handy.
+                <ul>
+                    <li><strong>The Saver:</strong> Trying to split 10 minutes into multiple breaks.</li>
+                    <li><strong>The Silent Sufferer:</strong> Needs a break but doesn't know to ask.</li>
+                    <li><strong>The Rusher:</strong> Trying to leave without proctor approval.</li>
+                </ul>
+            </div>
+            <p style="font-weight:bold; color:var(--pu-navy);">Select an incoming call to begin:</p>
+        `;
+
+        buttonContainer.innerHTML = '';
+        
+        const btn1 = document.createElement('button');
+        btn1.innerHTML = "📞 Answer Call 1: The Saver";
+        btn1.onclick = () => renderScenario('timeBank');
+        
+        const btn2 = document.createElement('button');
+        btn2.innerHTML = "📞 Answer Call 2: The Silent Sufferer";
+        btn2.onclick = () => renderScenario('omission');
+        
+        const btn3 = document.createElement('button');
+        btn3.innerHTML = "📞 Answer Call 3: The Rusher";
+        btn3.onclick = () => renderScenario('proctor');
+
+        buttonContainer.appendChild(btn1);
+        buttonContainer.appendChild(btn2);
+        buttonContainer.appendChild(btn3);
+    }
+
+    function renderScenario(scenarioKey) {
+        const data = scenarios[scenarioKey];
+        
+        logoDisplay.style.display = "none"; // Hide logo during scenarios to save space
+        tagDisplay.innerText = "Live Call";
+        titleDisplay.innerText = data.title;
+        contentDisplay.innerHTML = `<div style="background:#fff; padding:15px; border-left:4px solid var(--pu-gold); box-shadow:0 2px 5px rgba(0,0,0,0.05);">${data.prompt}</div>`;
+        
+        buttonContainer.innerHTML = '';
+
+        data.choices.forEach(choice => {
+            const btn = document.createElement('button');
+            btn.innerText = choice.text;
+            btn.onclick = () => renderFeedback(choice);
+            buttonContainer.appendChild(btn);
+        });
+    }
+
+    function renderFeedback(choiceData) {
+        tagDisplay.innerText = "Call Complete";
+        titleDisplay.innerText = "Performance Review";
+        
+        const feedbackClass = choiceData.isCorrect ? "feedback-success" : "feedback-fail";
+        
+        contentDisplay.innerHTML = `
+            <div class="feedback-box ${feedbackClass}">
+                <span class="feedback-title">${choiceData.isCorrect ? '✅' : '❌'} ${choiceData.feedbackTitle}</span>
+                ${choiceData.feedback}
+            </div>
+        `;
+        
+        buttonContainer.innerHTML = '';
+        
+        const returnBtn = document.createElement('button');
+        returnBtn.innerText = "Return to Dashboard";
+        returnBtn.className = "btn-menu";
+        returnBtn.onclick = renderDashboard;
+        
+        buttonContainer.appendChild(returnBtn);
+    }
+
+    renderDashboard();
+
+</script>
+</body>
+</html>
